@@ -14,7 +14,7 @@ const App: React.FC = () => {
         return (
           <div className="h-full flex items-center justify-center">
             <div className="text-center space-y-4 max-w-lg">
-              <img src="/logo.png" alt="Logo Kristus Raja" className="w-24 h-24 rounded-full object-cover mx-auto mb-6 shadow-xl shadow-black/10 bg-white border-4 border-white" />
+              <img src="/logo.jpg" alt="Logo Kristus Raja" className="w-24 h-24 rounded-full object-cover mx-auto mb-6 shadow-xl shadow-black/10 bg-white border-4 border-white" />
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Formater Jadwal Prodiakon</h2>
               <div className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200 text-left space-y-4 shadow-sm">
                 <p className="text-black text-xs md:text-sm leading-relaxed">
