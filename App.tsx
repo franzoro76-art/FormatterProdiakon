@@ -60,6 +60,9 @@ const App: React.FC = () => {
           {renderView()}
         </div>
       </main>
+       <footer className="w-full text-center py-2 text-[10px] text-slate-400 bg-[#fbfbfb] border-t border-slate-200 z-20">
+        Last update : 24 Maret 2026
+      </footer>
     </div>
   );
 };
