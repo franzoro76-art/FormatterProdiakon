@@ -28,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
   return (
     <header className="fixed top-0 left-0 right-0 bg-[#004510] border-b border-[#003000] z-50 px-4 py-3 flex items-center justify-between shadow-md">
       <div className="flex items-center space-x-3">
-        <img src="/logo.png" alt="Logo Kristus Raja" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-lg shadow-black/20 bg-white" />
+        <img src="/logo.jpg" alt="Logo Kristus Raja" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-lg shadow-black/20 bg-white" />
         <h1 className="text-sm md:text-base font-bold text-white">
           Prodiakon Kristus Raja
         </h1>
