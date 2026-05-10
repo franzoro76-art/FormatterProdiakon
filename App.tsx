@@ -3,8 +3,27 @@ import Navbar from './components/Navbar';
 import ScheduleModule from './components/ScheduleModule';
 import { AppView } from './types';
 
+declare const __BUILD_TIME__: string;
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
+
+  // Format the build time into Indonesian locale
+  const formattedBuildTime = React.useMemo(() => {
+    try {
+      const date = typeof __BUILD_TIME__ !== 'undefined' ? new Date(__BUILD_TIME__) : new Date();
+      return new Intl.DateTimeFormat('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      }).format(date);
+    } catch (e) {
+      return 'Baru Saja';
+    }
+  }, []);
 
   const renderView = () => {
     switch (currentView) {
@@ -60,8 +79,8 @@ const App: React.FC = () => {
           {renderView()}
         </div>
       </main>
-       <footer className="w-full text-center py-2 text-[10px] text-slate-400 bg-[#fbfbfb] border-t border-slate-200 z-20">
-        Last update : 24 Maret 2026
+      <footer className="w-full text-center py-2 text-[10px] text-slate-400 bg-[#fbfbfb] border-t border-slate-200 z-20">
+        Last update : {formattedBuildTime}
       </footer>
     </div>
   );
