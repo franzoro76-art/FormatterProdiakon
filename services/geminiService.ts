@@ -8,7 +8,7 @@ Tugasmu: mengubah gambar tabel jadwal (mirip Excel) menjadi format JSON terstruk
 ATURAN EKSTRAKSI & FORMATTING:
 1) BOLDING: Gunakan format bold WhatsApp (*teks*) untuk semua teks yang tercetak TEBAL (bold) di gambar asal. Ini sangat penting.
 2) Salin semua data apa adanya: judul misa, HR/perayaan, tanggal, hari, jam, daftar petugas P1..P7.
-3) Jika ada ikon/penanda kecil di samping nama, ubah menjadi emoji “💦” di belakang nama (beri spasi sebelum 💦).
+3) EMOJI PETUGAS: Jika ada emoji/ikon kecil di samping nama petugas di dalam gambar, SALIN EMOJI TERSEBUT APA ADANYA. JANGAN mengubahnya menjadi emoji lain (seperti tetesan air, dll). Pastikan emoji yang diekstrak sama persis bentuk dan maknanya dengan yang ada di gambar (beri spasi sebelum emoji).
 4) Jam selalu tulis “WIB”.
 5) WARNA LITURGI (PENTING):
    Di bawah baris Jam Misa, wajib tambahkan satu baris: "Warna Liturgi : <emoji hati 3x>"
