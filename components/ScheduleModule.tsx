@@ -53,13 +53,17 @@ const ScheduleModule: React.FC = () => {
       // Prepend the mandatory static note
       setBlocks([STATIC_NOTE, ...resultBlocks]);
     } catch (err: any) {
-      console.error("Extraction error:", err);
+      console.error("Extraction error details:", err);
       
       const errMsg = err.message || "";
-      if (errMsg === "IMAGE_UNCLEAR" || errMsg.includes("SyntaxError")) {
+      if (errMsg === "MISSING_API_KEY") {
+        setError("API Key tidak ditemukan. Pastikan 'GEMINI_API_KEY' sudah dikonfigurasi di Environment Variables (Vercel) dan lakukan redeploy aplikasi.");
+      } else if (errMsg === "IMAGE_UNCLEAR" || errMsg.includes("SyntaxError")) {
         setError("Silakan unggah gambar yang lebih jelas. Gambar saat ini terlalu buram untuk dibaca sistem.");
       } else {
-        setError("Terjadi kesalahan saat mengekstrak data. Pastikan koneksi stabil dan gambar berisi tabel jadwal.");
+        // More descriptive error for the user to help debug
+        const displayErr = errMsg.length > 100 ? errMsg.substring(0, 100) + "..." : errMsg;
+        setError(`Kesalahan: ${displayErr || "Terjadi masalah teknis saat memproses gambar"}. Pastikan koneksi internet stabil dan kunci API valid.`);
       }
     } finally {
       setIsExtracting(false);

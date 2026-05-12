@@ -42,7 +42,13 @@ PENTING: Jika gambar tidak mengandung tabel jadwal misa atau terlalu buram untuk
 
 export class GeminiService {
   async convertScheduleImageToText(base64Data: string, mimeType: string): Promise<any[]> {
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("GEMINI_API_KEY is not defined in the environment.");
+      throw new Error("MISSING_API_KEY");
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -66,21 +72,35 @@ export class GeminiService {
           {
             parts: [
               { inlineData: { data: base64Data, mimeType } },
-              { text: "Extract and format this schedule table into JSON blocks. Include heart icons for 'Warna Liturgi'. If a staff name is bold, bold the whole 'PX. Name' line." }
+              { text: "Extract and format this schedule table into JSON blocks according to the system instructions. Be very precise with bolding and icons." }
             ]
           }
         ],
       });
       
-      const text = response.text || '[]';
-      const parsed = JSON.parse(text);
-      
-      if (!Array.isArray(parsed)) {
-        throw new Error("INVALID_RESPONSE");
+      const text = response.text;
+      if (!text) {
+        throw new Error("EMPTY_RESPONSE");
       }
-      
-      return parsed;
+
+      try {
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed)) {
+          throw new Error("INVALID_RESPONSE_FORMAT");
+        }
+        return parsed;
+      } catch (parseError) {
+        // Fallback: try to extract JSON from markdown if present
+        const jsonMatch = text.match(/```json\n?([\s\S]*?)\n?```/) || text.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          const extractedText = jsonMatch[1] || jsonMatch[0];
+          const parsed = JSON.parse(extractedText);
+          if (Array.isArray(parsed)) return parsed;
+        }
+        throw parseError;
+      }
     } catch (e: any) {
+      console.error("Gemini AI Error:", e);
       if (e.name === 'SyntaxError') throw new Error("IMAGE_UNCLEAR");
       throw e;
     }
@@ -88,7 +108,10 @@ export class GeminiService {
 
   // Added chat method to handle conversation with history
   async chat(message: string, history: any[]): Promise<string> {
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) throw new Error("MISSING_API_KEY");
+    
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [...history, { role: 'user', parts: [{ text: message }] }],
@@ -98,9 +121,12 @@ export class GeminiService {
 
   // Added connectLive method to facilitate low-latency voice interaction
   connectLive(callbacks: any) {
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) throw new Error("MISSING_API_KEY");
+
+    const ai = new GoogleGenAI({ apiKey });
     return ai.live.connect({
-      model: 'gemini-2.5-flash-native-audio-preview-09-2025',
+      model: 'gemini-3.1-flash-live-preview',
       callbacks,
       config: {
         responseModalities: [Modality.AUDIO],
