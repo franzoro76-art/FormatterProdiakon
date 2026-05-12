@@ -42,7 +42,7 @@ PENTING: Jika gambar tidak mengandung tabel jadwal misa atau terlalu buram untuk
 
 export class GeminiService {
   async convertScheduleImageToText(base64Data: string, mimeType: string): Promise<any[]> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -88,7 +88,7 @@ export class GeminiService {
 
   // Added chat method to handle conversation with history
   async chat(message: string, history: any[]): Promise<string> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [...history, { role: 'user', parts: [{ text: message }] }],
@@ -98,7 +98,7 @@ export class GeminiService {
 
   // Added connectLive method to facilitate low-latency voice interaction
   connectLive(callbacks: any) {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     return ai.live.connect({
       model: 'gemini-2.5-flash-native-audio-preview-09-2025',
       callbacks,
