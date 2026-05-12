@@ -1,0 +1,9 @@
+{
+	"appId": "com.prodiakon.kristusraja",
+	"appName": "Prodi KR",
+	"webDir": "dist",
+	"bundledWebRuntime": false,
+	"server": {
+		"androidScheme": "https"
+	}
+}
